@@ -5,18 +5,29 @@
    
    // function to open connection
   function openConn(){
-   $dbhost = "localhost";
-   $dbuser = "root";
-   $dbpass = "";
+   $host = "localhost";
+   $user = "root";
+   $password = "";
    $db = "test_db";
-   $conn = mysqli_connect($dbhost, $dbuser, $dbpass,$db);
    
-   if(!$conn){
-      die("Connect failed:".mysqli_error());
-   }
+//    if(!$conn){
+//       die("Connect failed:".mysqli_error());
+//    }
   
-   //echo "Connected";
-   return $conn;
+//    echo "Connected";
+//    return $conn;
+//   }
+
+  try
+  {
+    $conn = new PDO("mysql:host=$host; dbname=$db;charset=UTF8;", $user, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      
+  }
+  catch(PDOException $exception)
+  {
+      echo "Connection error: " . $exception->getMessage();
   }
    
-?>
+  return $conn;
+}
