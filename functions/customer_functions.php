@@ -94,7 +94,7 @@ function get_orders($userId){
 
     $sql = "SELECT * FROM orders WHERE id = ?";
 
-    $stmt = $db->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->execute([$userId]);
     $row = $stmt->rowCount();
 
@@ -138,7 +138,7 @@ function joinquery($cat_id){
     $conn = openConn();
     $sql = 'SELECT * FROM food, food_category INNER JOIN food ON food.cat_id = food_category.id';
     
-  $stmt = $db->prepare($sql);
+  $stmt = $conn->prepare($sql);
   $result = $stmt->execute([$cat_id]);
 
   if($result){
