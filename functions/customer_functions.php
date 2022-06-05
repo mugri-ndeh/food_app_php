@@ -70,13 +70,13 @@ function getUser($id){
        }
 }
 
-function create_order($foodItems, $qty, $state, $priceTotal){
+function create_order($foodItems, $qty, $state, $, $userId){
     $conn = openConn();
 
-  $sql = "INSERT INTO orders (food_items, qty, o_state, price_total) VALUES (?, ?, ?, ?)";
+  $sql = "INSERT INTO orders (food_items, qty, o_state, price_total, user_id) VALUES (?, ?, ?, ?, ?)";
 
   $stmt = $conn->prepare($sql);
-  $result = $stmt->execute([$foodItems, $qty, $state, $priceTotal]);
+  $result = $stmt->execute([$foodItems, $qty, $state, $priceTotal, $userId]);
 
   $result = $conn->query($sql);
   if($result){
@@ -92,7 +92,7 @@ function create_order($foodItems, $qty, $state, $priceTotal){
 function get_orders($userId){
     $conn = openConn();
 
-    $sql = "SELECT * FROM orders WHERE id = ?";
+    $sql = "SELECT * FROM orders WHERE user_id = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute([$userId]);
