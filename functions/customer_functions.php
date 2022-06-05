@@ -105,7 +105,7 @@ function get_orders($userId){
          return $data;
      }
         else {
-           return 'failed1';
+           return 'failed';
         }
 }
 
