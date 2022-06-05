@@ -3,13 +3,15 @@
 include_once("../customer_functions.php");
 
 
-    $foodItems = $_POST['foodItems'];
+    $foodItems = $_POST['food_items'];
     $qty = $_POST['qty'];
-    $state = $_POST['state'];
-    $priceTotal = $_POST['priceTotal'];
+    $state = $_POST['o_state'];
+    $priceTotal = $_POST['price_total'];
+    $userid = $_POST['user_id'];
+
    
 
-    $result = create_order($foodItems, $qty, $state, $priceTotal);
+    $result = create_order($foodItems, $qty, $state, $priceTotal, $userid);
     //pt the result and name in associative array to send back to front end
 
     $data = array(
