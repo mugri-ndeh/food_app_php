@@ -72,6 +72,7 @@ function getUser($id){
 
 function create_order($foodItems, $qty, $state, $priceTotal, $userId){
     $conn = openConn();
+    $newItems = json_decode($foodItems);
 
   $sql = "INSERT INTO orders (food_items, qty, o_state, price_total, u_id) VALUES (?, ?, ?, ?, ?) ";
 
@@ -79,7 +80,6 @@ function create_order($foodItems, $qty, $state, $priceTotal, $userId){
   $result = $stmt->execute([$foodItems, $qty, $state, $priceTotal, $userId]);
 
   if($result){
-      echo $result;
     return 'success';
    }
   
@@ -91,7 +91,7 @@ function create_order($foodItems, $qty, $state, $priceTotal, $userId){
 function get_orders($userId){
     $conn = openConn();
 
-    $sql = "SELECT * FROM orders WHERE user_id = ?";
+    $sql = "SELECT * FROM orders WHERE u_id = ? ";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute([$userId]);
@@ -99,7 +99,7 @@ function get_orders($userId){
 
     //if query works
      if ($row>0) {
-         $data = $stmt->fetch(PDO::FETCH_ASSOC);
+         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
          return $data;
      }
