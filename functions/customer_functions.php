@@ -73,12 +73,11 @@ function getUser($id){
 function create_order($foodItems, $qty, $state, $priceTotal, $userId){
     $conn = openConn();
 
-  $sql = "INSERT INTO `orders` (food_items, qty, o_state, price_total, u_id) VALUES (?, ?, ?, ?, ?) ";
+  $sql = "INSERT INTO orders (food_items, qty, o_state, price_total, u_id) VALUES (?, ?, ?, ?, ?) ";
 
   $stmt = $conn->prepare($sql);
   $result = $stmt->execute([$foodItems, $qty, $state, $priceTotal, $userId]);
 
-  $result = $conn->query($sql);
   if($result){
       echo $result;
     return 'success';
