@@ -70,6 +70,25 @@ function getUser($id){
        }
 }
 
+function editProfile($firstname, $lastname, $username, $email, $phonenumber, $id){
+    $conn = openConn();
+
+    $sql = "UPDATE user SET firstname = ?, lastname = ?, username = ?, email = ?, phonenumber = ? WHERE id = ? ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$firstname, $lastname, $username, $email, $phonenumber, $id]);
+    $row = $stmt->rowCount();
+
+   //if query works
+    if ($row>0) {
+        $data = getUser($id);
+        return $data;
+        }
+       else {
+          return 'failed';
+       }
+}
+
 function create_order($foodItems, $qty, $state, $priceTotal, $userId){
     $conn = openConn();
     $newItems = json_decode($foodItems);
@@ -120,12 +139,28 @@ function get_food_list($cat_id){
   $row = $stmt->rowCount();
 
   if ($row>0) {
-//       $arr_data = array(); 
-//       while(row>0){
-// $arr_data = 
-//       }
+
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// echo $data;
+    return $data;
+}
+   else {
+      return 'failed';
+   }
+}
+
+function getAllFoods($query){
+    $conn = openConn();
+
+  $sql = "SELECT * FROM food WHERE name = ?";
+
+  $stmt = $conn->prepare($sql);
+  
+  $stmt->execute([$query]);
+  $row = $stmt->rowCount();
+
+  if ($row>0) {
+
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $data;
 }
    else {
