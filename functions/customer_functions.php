@@ -151,11 +151,11 @@ function get_food_list($cat_id){
 function getAllFoods($query){
     $conn = openConn();
 
-  $sql = "SELECT * FROM food WHERE name = ?";
+  $sql = "SELECT * FROM food WHERE name LIKE ? LIMIT 5";
 
   $stmt = $conn->prepare($sql);
   
-  $stmt->execute([$query]);
+  $stmt->execute(["%$query%"]);
   $row = $stmt->rowCount();
 
   if ($row>0) {
