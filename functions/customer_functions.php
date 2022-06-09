@@ -18,7 +18,6 @@ function signup($firstname, $lastname, $username, $email, $phonenumber, $passwor
    //if query works
     if ($res) {
         
-        echo('Result exists');
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return 'success';
         }
