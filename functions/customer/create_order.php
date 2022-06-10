@@ -10,9 +10,10 @@ include_once("../customer_functions.php");
 
     $new = json_decode($foodItems, true);
 
+
    
 
-    $result = create_order($foodItems, $qty, $state, $priceTotal, $userid);
+    $result = create_order($new, $qty, $state, $priceTotal, $userid);
     //pt the result and name in associative array to send back to front end
 
     $data = array(
