@@ -88,16 +88,36 @@ function editProfile($firstname, $lastname, $username, $email, $phonenumber, $id
        }
 }
 
-function create_order($foodItems, $qty, $state, $priceTotal, $userId){
-    $conn = openConn();
-    $newItems = json_decode($foodItems);
+function addOrderItem($order_id, $food_id, $qty){
+  $conn = openConn();
+  $sql = 'INSERT INTO order_item (order_id, food_id, food_qty) VALUES (?, ?, ?)';
+  $stmt = $conn->prepare($sql);
+  $res = $stmt->execute([$order_id, $food_id, $qty]);
 
-  $sql = "INSERT INTO orders (food_items, qty, o_state, price_total, u_id) VALUES (?, ?, ?, ?, ?) ";
+  if($res){
+    return 'success';
+  }
+  else {
+    return 'failed';
+  }
+
+}  
+
+function create_order(array $foodItems, $qty, $state, $priceTotal, $userId){
+    $conn = openConn();
+    
+    
+
+  $sql = "INSERT INTO orders (qty, o_state, price_total, u_id) VALUES (?, ?, ?, ?) ";
 
   $stmt = $conn->prepare($sql);
-  $result = $stmt->execute([$foodItems, $qty, $state, $priceTotal, $userId]);
+  $result = $stmt->execute([$qty, $state, $priceTotal, $userId]);
+  $last_id = $conn->lastInsertId();
 
   if($result){
+    for ($i=0; $i <sizeof($foodItems) ; $i++) { 
+      addOrderItem($last_id, $foodItems[$i]['item']['id'], $foodItems[$i]['qty']);
+    }
     return 'success';
    }
   
@@ -106,10 +126,33 @@ function create_order($foodItems, $qty, $state, $priceTotal, $userId){
   }
 }
 
+function getOrderItem($order_id){
+  $conn = openConn();
+
+  $sql = 'SELECT order_item.order_id, order_item.food_qty, food.id, food.name, food.image, food.price, food.cat_id, food.description FROM order_item INNER JOIN food ON order_item.food_id = food.id WHERE order_item.order_id = ?';
+
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$order_id]);
+  $row = $stmt->rowCount();
+
+  //if query works
+   if ($row>0) {
+       $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  
+       return $data;
+   }
+      else {
+         return 'failed';
+      }
+}
+
 function get_orders($userId){
     $conn = openConn();
 
-    $sql = "SELECT * FROM orders WHERE u_id = ? ";
+    $sql = "SELECT orders.id, orders.o_state, orders.qty, orders.price_total FROM orders INNER JOIN user ON orders.u_id = ? ";
+
+    // $sql = "SELECT order_item FROM ((order_item INNER JOIN orders ON orders.id = order_item.order_id) INNER JOIN user ON orders.u_id = ?) ";
+
 
     $stmt = $conn->prepare($sql);
     $stmt->execute([$userId]);
@@ -118,7 +161,6 @@ function get_orders($userId){
     //if query works
      if ($row>0) {
          $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
          return $data;
      }
         else {
