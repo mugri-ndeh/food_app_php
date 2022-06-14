@@ -225,4 +225,19 @@ function joinquery($cat_id){
   }
 }
 
-function getAllReviews(){}
+function getAllReviews($id){
+  $conn = openConn();
+  $sql = "SELECT * FROM reviews INNER JOIN users ON users.uid = reviews.user_id WHERE users.uid = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$id]);
+
+  $row = $stmt->rowCount();
+
+  if ($row>0){
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $data;
+  }
+  else{
+    return 'failed';
+  }
+}
