@@ -183,7 +183,7 @@ function get_food_list($cat_id){
 
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $data;
-}
+  }
    else {
       return 'failed';
    }
@@ -203,7 +203,7 @@ function getAllFoods($query){
 
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $data;
-}
+  }
    else {
       return 'failed';
    }
@@ -224,3 +224,5 @@ function joinquery($cat_id){
       return "failed";
   }
 }
+
+function getAllReviews(){}
