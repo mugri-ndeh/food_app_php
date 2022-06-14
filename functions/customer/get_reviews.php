@@ -7,7 +7,7 @@ include_once("../customer_functions.php");
 
 
 
-    $result = getAllReviews();
+    $result = getAllReviews($id);
     //pt the result and name in associative array to send back to front end
     
     $data = array(
