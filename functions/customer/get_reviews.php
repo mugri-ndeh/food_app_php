@@ -1,18 +1,18 @@
 <?php
 include_once("../customer_functions.php");
 
-    $id = $_POST['id'];
+$id = $_POST['id'];
 
-     // );
+// );
 
 
 
-    $result = getAllReviews($id);
-    //pt the result and name in associative array to send back to front end
-    
-    $data = array(
-        'state'=>$result,
-    );
-    
+$result = getAllReviews($id);
+//pt the result and name in associative array to send back to front end
 
-    echo json_encode($data);
+$data = array(
+    'state' => $result,
+);
+
+
+echo json_encode($data);

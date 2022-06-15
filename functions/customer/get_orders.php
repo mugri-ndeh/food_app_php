@@ -1,27 +1,27 @@
 <?php
 include_once("../customer_functions.php");
 
-    $id = $_POST['id'];
-
-     // );
-
+$id = $_POST['id'];
+$new = 0;
 
 
-    $result = get_orders($id);
-    //pt the result and name in associative array to send back to front end
-    $orders = [];
 
-    foreach($result as $item){
-     $fooditem = getOrderItem($item['id']);
+$result = get_orders($id);
+//pt the result and name in associative array to send back to front end
+$orders = [];
 
-        array_push($orders, array(
-            'items'=> $fooditem,
-            'order'=>$item
-          ));
-    }
-    $data = array(
-        'state'=>$orders,
-    );
-    
+foreach ($result as $item)
+{
+    $fooditem = getOrderItem($item['id']);
 
-    echo json_encode($data);
+    array_push($orders, array(
+        'items' => $fooditem,
+        'order' => $item
+      ));
+}
+$data = array(
+    'state' => $orders,
+);
+
+
+echo json_encode($data);
